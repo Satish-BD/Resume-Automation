@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="view`rt" content="width=device-width, initial-scale=1.0">
+  <title>Resume Automation template</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+
+    body {
+      width: auto;
+      height: auto;
+      padding: 0;
+      margin: 0;
+      max-width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .header p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      font-size: 18px;
+      color: black;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+
+    li {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .topicPageBreak {
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>{{ student_info.studentname | default('—') }}</h1>
+      <p>Mobile: {{ student_info.studentmobilenumber | default('—') }} • Email: {{ student_info.studentemail |
+        default('—') }}</p>
+      <p>Address: {{ student_info.studentaddress | default('-') }}</p>
+    </div>
+    <div class="section">
+      <h2>Objective</h2>
+      <p>{{ student_info.objective | default('—') }}</p>
+    </div>
+    <div class="section">
+      <h2>Education</h2>
+      <table>
+        <tr>
+          <td>
+            {% if student_info.course and student_info.course|length > 0 %}
+            <strong>{{ student_info.course[0].full_course_name }}</strong><br>
+            {% else %}
+            <strong>Degree</strong><br>
+            {% endif %}
+
+            {{ student_info.degreecollege | default('—') }}<br>
+            Expected Graduation: {{ student_info.degreeyearofpass | default('—') }}, Average CGPA: {{
+            student_info.degreeavgcgpa | default('—') }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table>
+              <tr>
+                <th>Semester</th>
+                <th>CGPA</th>
+                <th>Year</th>
+              </tr>
+              {% for degree in student_info.degreeinfo %}
+              <tr>
+                <td>Semester {{ loop.index }}</td>
+                <td>{{ degree.percentage | default('—') }}</td>
+                <td>{{ degree.year | default('—') }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Intermediate</strong><br>
+            {{ student_info.intercollegename | default('—') }}, {{ student_info.interboard | default('—') }}<br>
+            Year of Pass: {{ student_info.interyearofpass | default('—') }}, Percentage: {{ student_info.interpercentage
+            | default('—') }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>SSC</strong><br>
+            {{ student_info.sscschoolname | default('—') }}, {{ student_info.sscboard | default('—') }}<br>
+            Year of Pass: {{ student_info.sscyearofpass | default('—') }}, CGPA: {{ student_info.sscgpa | default('—')
+            }}
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="section topicPageBreak">
+      <h2>Skills</h2>
+      <ul>
+        <li style="text-transform: capitalize;"><strong>technical skills</strong>: {{ student_info.skillset | join(', ')
+          }}</li>
+        <li style="text-transform: capitalize;"><strong>Language Proficiency </strong>: {{
+          student_info.language }}
+        </li>
+      </ul>
+    </div>
+    
+    <div class="section topicPageBreak">
+      {% if student_info.projectinfo %}
+      <h2>Projects</h2>
+      <ul>
+        {% for project in student_info.projectinfo %}
+        <li><strong>{{ project.name | default('—') }}</strong>: {{ project.description | default('—') }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <div class="section topicPageBreak">
+      {% if student_info.experienceinfo %}
+      <h2>Experience/Internship</h2>
+      <ul>
+        {% for experience in student_info.experienceinfo %}
+        <li><strong>{{ experience.company | default('—') }}</strong>: {{ experience.years | default('—') }} years</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <div class="section topicPageBreak">
+      {% if student_info.coursecertification %}
+      <h2>Certificates</h2>
+      <ul>
+        {% for cert in student_info.coursecertification.split(', ') %}
+        <li style="text-transform: capitalize;">{{ cert }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <div class="section topicPageBreak">
+      <h2>Personal Details</h2>
+      <ul>
+        <li><strong>Date of Birth</strong>: {{ student_info.dob | default('—') }}</li>
+        <li><strong>Father’s Name</strong>: {{ student_info.fathername | default('—') }} ({{
+          student_info.fatheroccupation | default('—') }})</li>
+        <li><strong>Mother’s Name</strong>: {{ student_info.mothername | default('—') }} ({{
+          student_info.motheroccupation | default('—') }})</li>
+      </ul>
+    </div>
+    <div class="section topicPageBreak" style="page-break-inside: avoid;">
+      <h3 style="margin-bottom: 15px; font-weight: bold;">Declaration</h3>
+      <div style="border-top: 1px solid #ddd; padding-top: 20px; page-break-inside: avoid;">
+        <p style="font-style: italic; margin-top: -8px;">
+          I hereby declare that the above-mentioned information is true to the best of my knowledge.
+        </p>
+
+        <div style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-end;
+                  page-break-inside: avoid;
+                  margin-top: 30px;
+                ">
+          <p style="margin: 0; font-weight: normal;">
+            Name: {{ student_info.studentname | default('—') }}
+          </p>
+          <p style="margin: 0; padding-right: 85px;">
+            Place: {{ student_info.city if student_info.city else '—' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

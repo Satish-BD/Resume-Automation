@@ -1,0 +1,15 @@
+{
+        "drive_name": "Tech Innovators",
+        "date": "2023-10-01",
+        "description": "A leading tech company looking for fresh talent.",
+        "requirements": [
+            "Bachelor's degree in Computer Science or related field",
+            "Strong programming skills in Python, Java, or C++",
+            "Excellent problem-solving abilities"
+        ],
+        "required_skills": [
+            "Python",
+            "Java",
+            "C++"
+        ]
+    }
